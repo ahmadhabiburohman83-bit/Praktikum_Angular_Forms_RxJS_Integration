@@ -1,1 +1,66 @@
-<p>step-personal works!</p>
+<form [formGroup]="form" class="step-personal-form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>First Name</mat-label>
+    <input matInput formControlName="firstName" placeholder="Enter your first name">
+    @if (form.get('firstName')?.hasError('required')) {
+      <mat-error>First Name is required.</mat-error>
+    }
+    @if (form.get('firstName')?.hasError('whitespaceOnly')) {
+      <mat-error>First Name cannot contain only whitespace.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Last Name</mat-label>
+    <input matInput formControlName="lastName" placeholder="Enter your last name">
+    @if (form.get('lastName')?.hasError('required')) {
+      <mat-error>Last Name is required.</mat-error>
+    }
+    @if (form.get('lastName')?.hasError('whitespaceOnly')) {
+      <mat-error>Last Name cannot contain only whitespace.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>NIK</mat-label>
+    <input matInput formControlName="nik" placeholder="Enter 16 digit NIK">
+    @if (form.get('nik')?.hasError('required')) {
+      <mat-error>NIK is required.</mat-error>
+    }
+    @if (form.get('nik')?.hasError('minlength')) {
+      <mat-error>NIK must be at least 16 characters.</mat-error>
+    }
+    @if (form.get('nik')?.hasError('invalidNik')) {
+      <mat-error>NIK format is invalid.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Gender</mat-label>
+    <mat-select formControlName="gender">
+      <mat-option value="male">Male</mat-option>
+      <mat-option value="female">Female</mat-option>
+    </mat-select>
+    @if (form.get('gender')?.hasError('required')) {
+      <mat-error>Gender is required.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Birth Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="birthDate" placeholder="Choose a date">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    @if (form.get('birthDate')?.hasError('required')) {
+      <mat-error>Birth Date is required.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Phone</mat-label>
+    <input matInput formControlName="phone" placeholder="Enter phone number">
+    @if (form.get('phone')?.hasError('required')) {
+      <mat-error>Phone is required.</mat-error>
+    }
+  </mat-form-field>
+</form>

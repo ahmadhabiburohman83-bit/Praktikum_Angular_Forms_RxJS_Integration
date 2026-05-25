@@ -1,0 +1,131 @@
+<div class="account-settings-container">
+  <!-- 1. Spinner Loading di awal -->
+  @if (isLoading) {
+    <div class="loading-overlay" style="display: flex; justify-content: center; padding: 2rem;">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else {
+    <form [formGroup]="settingsForm" class="settings-form">
+      
+      <!-- 2. Input Utama -->
+      <mat-card class="section-card">
+        <mat-card-header>
+          <mat-card-title>Informasi Akun</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          
+          <div class="form-row" style="margin-bottom: 1rem;">
+            <mat-label style="display: block; margin-bottom: 8px;">Tipe Akun</mat-label>
+            <mat-radio-group formControlName="accountType" class="account-type-group" color="primary">
+              <mat-radio-button value="personal" style="margin-right: 16px;">Personal</mat-radio-button>
+              <mat-radio-button value="business">Bisnis</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nama Lengkap</mat-label>
+            <input matInput formControlName="fullName" placeholder="Masukkan nama lengkap">
+          </mat-form-field>
+
+          <!-- 3. Input Email dengan Async Validator Indicator -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Masukkan email aktif">
+            
+            <!-- Spinner saat async validator pending -->
+            @if (settingsForm.get('email')?.pending) {
+              <mat-spinner matSuffix diameter="20"></mat-spinner>
+            }
+            
+            <!-- Ikon centang hijau bila email valid dan selesai divalidasi -->
+            @if (settingsForm.get('email')?.valid && !settingsForm.get('email')?.pending && settingsForm.get('email')?.value) {
+              <mat-icon matSuffix style="color: green;">check_circle</mat-icon>
+            }
+
+            @if (settingsForm.get('email')?.hasError('required')) {
+              <mat-error>Email wajib diisi.</mat-error>
+            }
+            @if (settingsForm.get('email')?.hasError('email')) {
+              <mat-error>Format email tidak valid.</mat-error>
+            }
+            @if (settingsForm.get('email')?.hasError('emailTaken')) {
+              <mat-error>Email sudah digunakan oleh pengguna lain.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nomor Telepon</mat-label>
+            <input matInput formControlName="phone" placeholder="Masukkan nomor telepon">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Bio</mat-label>
+            <textarea matInput formControlName="bio" placeholder="Tuliskan bio singkat" rows="3"></textarea>
+          </mat-form-field>
+
+        </mat-card-content>
+      </mat-card>
+
+      <!-- 4. Bagian Conditional Section (Bisnis) -->
+      @if (settingsForm.get('accountType')?.value === 'business') {
+        <mat-card class="section-card business-section" formGroupName="business" style="margin-top: 1rem;">
+          <mat-card-header>
+            <mat-card-title>Informasi Bisnis</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nama Perusahaan</mat-label>
+              <input matInput formControlName="companyName" placeholder="Masukkan nama perusahaan">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>NPWP</mat-label>
+              <input matInput formControlName="npwp" placeholder="Masukkan NPWP perusahaan">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Sektor Bisnis</mat-label>
+              <mat-select formControlName="businessSector">
+                <mat-option value="it">Teknologi Informasi</mat-option>
+                <mat-option value="finance">Keuangan</mat-option>
+                <mat-option value="health">Kesehatan</mat-option>
+                <mat-option value="retail">Ritel</mat-option>
+                <mat-option value="other">Lainnya</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <!-- 5. Status Bar Reaktif -->
+      <div class="status-bar" style="margin-top: 1rem; padding: 12px; border-radius: 4px; background-color: #f5f5f5;">
+        @if (settingsForm.pristine) {
+          <span class="status-text" style="color: #4caf50; font-weight: 500;">
+            <mat-icon style="vertical-align: middle; font-size: 18px; width: 18px; height: 18px;">done_all</mat-icon>
+            Tersimpan
+          </span>
+        } @else {
+          <span class="status-text" style="color: #ff9800; font-weight: 500;">
+            <mat-icon style="vertical-align: middle; font-size: 18px; width: 18px; height: 18px;">warning</mat-icon>
+            Ada perubahan belum disimpan
+          </span>
+        }
+      </div>
+
+      <!-- 6. Tombol Simpan Perubahan -->
+      <div class="actions-container" style="margin-top: 1rem; text-align: right;">
+        <button mat-raised-button color="primary" 
+                type="button"
+                (click)="onSave()" 
+                [disabled]="!canSave || isSaving || settingsForm.pending">
+          @if (isSaving) {
+            <mat-spinner diameter="20" style="display: inline-block; vertical-align: middle; margin-right: 8px;"></mat-spinner> Menyimpan...
+          } @else {
+            Simpan Perubahan
+          }
+        </button>
+      </div>
+
+    </form>
+  }
+</div>

@@ -1,1 +1,21 @@
-<p>register-wizard works!</p>
+<div class="wizard-container">
+  <!-- Progress Bar Reaktif -->
+  <mat-progress-bar 
+    mode="determinate" 
+    [value]="(currentStep / 3) * 100">
+  </mat-progress-bar>
+
+  <div class="step-content">
+    @switch (currentStep) {
+      @case (1) {
+        <app-step-personal></app-step-personal>
+      }
+      @case (2) {
+        <app-step-account></app-step-account>
+      }
+      @case (3) {
+        <app-step-review></app-step-review>
+      }
+    }
+  </div>
+</div>

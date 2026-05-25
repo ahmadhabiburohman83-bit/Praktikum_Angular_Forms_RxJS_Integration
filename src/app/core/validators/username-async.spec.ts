@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UsernameAsync } from './username-async';
+import { UsernameAsyncValidator } from './username-async';
 
-describe('UsernameAsync', () => {
-  let service: UsernameAsync;
+describe('UsernameAsyncValidator', () => {
+  let service: UsernameAsyncValidator;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(UsernameAsync);
+    service = TestBed.inject(UsernameAsyncValidator);
   });
 
   it('should be created', () => {

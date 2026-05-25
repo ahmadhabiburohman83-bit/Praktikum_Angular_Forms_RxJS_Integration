@@ -1,0 +1,99 @@
+<form [formGroup]="orderForm" class="order-form-container">
+  
+  <!-- 1. Input Data Pelanggan -->
+  <mat-card class="section-card customer-section">
+    <mat-card-header>
+      <mat-card-title>Data Pelanggan</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Customer Name</mat-label>
+          <input matInput formControlName="customerName" placeholder="Masukkan nama pelanggan">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Customer Phone</mat-label>
+          <input matInput formControlName="customerPhone" placeholder="Masukkan nomor telepon">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Delivery Address</mat-label>
+        <textarea matInput formControlName="deliveryAddress" placeholder="Alamat pengiriman" rows="2"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Notes</mat-label>
+        <textarea matInput formControlName="notes" placeholder="Catatan tambahan (opsional)" rows="2"></textarea>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- 2 & 3. Bagian Loop FormArray Items -->
+  <mat-card class="section-card items-section">
+    <mat-card-header>
+      <mat-card-title>Daftar Pesanan</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div formArrayName="items" class="items-array-container">
+        
+        <!-- Loop untuk setiap item pesanan -->
+        <div *ngFor="let item of itemGroups; let i = index" [formGroupName]="i" class="item-row">
+          
+          <!-- Product Search (Live Search dengan Autocomplete) -->
+          <mat-form-field appearance="outline" class="item-input product-search-input">
+            <mat-label>Cari Produk</mat-label>
+            <input type="text" matInput formControlName="productSearch" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <!-- Template ini disiapkan untuk opsi dari productSvc -->
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <!-- Unit Price (Readonly) -->
+          <mat-form-field appearance="outline" class="item-input">
+            <mat-label>Unit Price</mat-label>
+            <input matInput type="number" formControlName="unitPrice" readonly>
+          </mat-form-field>
+
+          <!-- Quantity -->
+          <mat-form-field appearance="outline" class="item-input">
+            <mat-label>Quantity</mat-label>
+            <input matInput type="number" formControlName="quantity">
+          </mat-form-field>
+
+          <!-- Discount -->
+          <mat-form-field appearance="outline" class="item-input">
+            <mat-label>Discount</mat-label>
+            <input matInput type="number" formControlName="discount">
+          </mat-form-field>
+
+          <!-- Teks subtotal baris -->
+          <div class="subtotal-container">
+            <span>Subtotal:</span>
+            <strong>{{ getRowSubtotal(i) | currency:'IDR' }}</strong>
+          </div>
+
+          <!-- Tombol Hapus Item -->
+          <button mat-button color="warn" type="button" (click)="removeItem(i)" class="remove-btn">
+            Hapus Item
+          </button>
+          
+        </div>
+
+      </div>
+
+      <!-- 4. Tombol + Tambah Item -->
+      <div class="add-btn-container">
+        <button mat-raised-button color="primary" type="button" (click)="addItem()">
+          + Tambah Item
+        </button>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <!-- 5. Komponen Ringkasan -->
+  <app-order-summary [total]="grandTotal$"></app-order-summary>
+
+</form>
