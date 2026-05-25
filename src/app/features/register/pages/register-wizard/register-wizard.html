@@ -2,20 +2,29 @@
   <!-- Progress Bar Reaktif -->
   <mat-progress-bar 
     mode="determinate" 
-    [value]="(currentStep / 3) * 100">
+    [value]="(currentStep / 2) * 100">
   </mat-progress-bar>
 
   <div class="step-content">
     @switch (currentStep) {
+      @case (0) {
+        <app-step-personal [form]="personalForm"></app-step-personal>
+      }
       @case (1) {
-        <app-step-personal></app-step-personal>
+        <app-step-account [form]="accountForm"></app-step-account>
       }
       @case (2) {
-        <app-step-account></app-step-account>
-      }
-      @case (3) {
         <app-step-review></app-step-review>
       }
+    }
+  </div>
+
+  <div class="wizard-actions">
+    <button mat-button (click)="prevStep()" [disabled]="currentStep === 0">Back</button>
+    @if (currentStep < 2) {
+      <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
+    } @else {
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting">Submit</button>
     }
   </div>
 </div>

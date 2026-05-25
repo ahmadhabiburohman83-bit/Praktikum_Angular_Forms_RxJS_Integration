@@ -1,17 +1,17 @@
-<form [formGroup]="accountForm" class="step-account-form">
+<form [formGroup]="form" class="step-account-form">
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Username</mat-label>
     <input matInput formControlName="username" placeholder="Choose a username">
     
     <!-- Loading spinner saat async validator berjalan -->
-    @if (accountForm.get('username')?.pending) {
+    @if (form.get('username')?.pending) {
       <mat-spinner matSuffix diameter="20"></mat-spinner>
     }
     
-    @if (accountForm.get('username')?.hasError('required')) {
+    @if (form.get('username')?.hasError('required')) {
       <mat-error>Username is required.</mat-error>
     }
-    @if (accountForm.get('username')?.hasError('usernameTaken')) {
+    @if (form.get('username')?.hasError('usernameTaken')) {
       <mat-error>Username is already taken.</mat-error>
     }
   </mat-form-field>
@@ -19,10 +19,10 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Email</mat-label>
     <input matInput type="email" formControlName="email" placeholder="Enter your email">
-    @if (accountForm.get('email')?.hasError('required')) {
+    @if (form.get('email')?.hasError('required')) {
       <mat-error>Email is required.</mat-error>
     }
-    @if (accountForm.get('email')?.hasError('email')) {
+    @if (form.get('email')?.hasError('email')) {
       <mat-error>Invalid email format.</mat-error>
     }
   </mat-form-field>
@@ -30,10 +30,10 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Password</mat-label>
     <input matInput type="password" formControlName="password" placeholder="Create a password">
-    @if (accountForm.get('password')?.hasError('required')) {
+    @if (form.get('password')?.hasError('required')) {
       <mat-error>Password is required.</mat-error>
     }
-    @if (accountForm.get('password')?.hasError('minlength')) {
+    @if (form.get('password')?.hasError('minlength')) {
       <mat-error>Password must be at least 8 characters long.</mat-error>
     }
   </mat-form-field>
@@ -41,11 +41,11 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Confirm Password</mat-label>
     <input matInput type="password" formControlName="confirmPassword" placeholder="Confirm your password">
-    @if (accountForm.get('confirmPassword')?.hasError('required')) {
+    @if (form.get('confirmPassword')?.hasError('required')) {
       <mat-error>Please confirm your password.</mat-error>
     }
     <!-- Error di level FormGroup untuk mis-match -->
-    @if (accountForm.hasError('passwordMismatch')) {
+    @if (form.hasError('passwordMismatch')) {
       <mat-error>Passwords do not match.</mat-error>
     }
   </mat-form-field>
@@ -54,7 +54,7 @@
     <mat-checkbox formControlName="agreeTerms">
       I agree to the Terms and Conditions
     </mat-checkbox>
-    @if (accountForm.get('agreeTerms')?.touched && accountForm.get('agreeTerms')?.invalid) {
+    @if (form.get('agreeTerms')?.touched && form.get('agreeTerms')?.invalid) {
       <mat-error class="error-text" style="font-size: 12px; margin-top: 4px; display: block;">
         You must agree to the terms to proceed.
       </mat-error>
