@@ -1,0 +1,1 @@
+import{Fb as m,L as t,Pb as n,sa as i}from"./chunk-Z7HOR6IY.js";var f=[],r=class o{static \u0275fac=function(e){return new(e||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[n.forChild(f),n]})};var s=class o{static \u0275fac=function(e){return new(e||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[m,r]})};export{s as OrderModule};
