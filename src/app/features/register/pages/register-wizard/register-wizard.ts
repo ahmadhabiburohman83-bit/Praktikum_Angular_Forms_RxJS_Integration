@@ -34,7 +34,7 @@ import { UsernameAsyncValidator } from '../../../../core/validators/username-asy
     StepReview
   ],
   templateUrl: './register-wizard.html',
-  styleUrls: [] 
+  styleUrls: ['./register-wizard.scss'] 
 })
 export class RegisterWizardComponent implements OnInit {
   currentStep = 0;

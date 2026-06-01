@@ -15,7 +15,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatProgressSpinnerModule,
     MatCheckboxModule
   ],
-  templateUrl: './step-account.html'
+  templateUrl: './step-account.html',
+  styleUrls: ['./step-account.scss']
 })
 export class StepAccountComponent {
   @Input() form!: FormGroup;

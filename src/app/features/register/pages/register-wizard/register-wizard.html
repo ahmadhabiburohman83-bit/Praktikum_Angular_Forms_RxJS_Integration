@@ -1,5 +1,35 @@
 <div class="wizard-container">
-  <!-- Progress Bar Reaktif -->
+  
+  <div class="wizard-header">
+    <h2>Praktikum 1: Form Registrasi Multi-Step</h2>
+    <p>Desain dan Pemrograman Web — Politeknik Negeri Malang</p>
+  </div>
+
+  <div class="step-indicators-container">
+    <div class="step-badge" [class.active]="currentStep === 0" [class.completed]="currentStep > 0">
+      <span class="badge-number">
+        @if (currentStep > 0) { ✓ } @else { 1 }
+      </span>
+      <span class="badge-label">Data Pribadi</span>
+    </div>
+    
+    <div class="step-connector" [class.active]="currentStep > 0"></div>
+    
+    <div class="step-badge" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+      <span class="badge-number">
+        @if (currentStep > 1) { ✓ } @else { 2 }
+      </span>
+      <span class="badge-label">Akun</span>
+    </div>
+    
+    <div class="step-connector" [class.active]="currentStep > 1"></div>
+    
+    <div class="step-badge" [class.active]="currentStep === 2">
+      <span class="badge-number">3</span>
+      <span class="badge-label">Review</span>
+    </div>
+  </div>
+
   <mat-progress-bar 
     mode="determinate" 
     [value]="(currentStep / 2) * 100">
@@ -24,7 +54,9 @@
     @if (currentStep < 2) {
       <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
     } @else {
-      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting">Submit</button>
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting">
+        @if (isSubmitting) { Memproses... } @else { Submit Registrasi }
+      </button>
     }
   </div>
 </div>
