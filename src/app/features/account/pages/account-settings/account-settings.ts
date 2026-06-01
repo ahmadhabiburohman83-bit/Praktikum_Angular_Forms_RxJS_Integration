@@ -12,8 +12,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field'; // 1. TULIS IMPORT INI
-// PERBAIKAN: Jalur nama file diubah dari account. menjadi account.service
+// 1. INI ADALAH MODUL YANG KETINGGALAN
+import { MatFormFieldModule } from '@angular/material/form-field'; 
+
 import { AccountService } from '../../services/account'; 
 import { noWhitespaceValidator } from '../../../../core/validators/password.validator'; 
 
@@ -23,7 +24,8 @@ import { noWhitespaceValidator } from '../../../../core/validators/password.vali
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
+    // 2. MODULNYA DIDAFTARKAN DI SINI
+    MatFormFieldModule, 
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
@@ -55,7 +57,7 @@ export class AccountSettingsComponent implements OnInit {
   buildForm() { 
     this.settingsForm = this.fb.group({ 
       accountType: ['personal', Validators.required], 
-      fullName: ['', [Validators.required, noWhitespaceValidator]], 
+      fullName: ['', [Validators.required, noWhitespaceValidator()]], 
       email: [ 
         '', 
         [Validators.required, Validators.email], 
@@ -79,7 +81,7 @@ export class AccountSettingsComponent implements OnInit {
       next: (profile: any) => {
         this.currentEmail = profile.email; 
    
-        // 1. Isi data ke form utama
+        // Mengisi data ke form utama
         this.settingsForm.patchValue({ 
           accountType: profile.accountType, 
           fullName:    profile.fullName, 
@@ -88,7 +90,7 @@ export class AccountSettingsComponent implements OnInit {
           bio:         profile.bio || '', 
         }); 
    
-        // 2. Isi data ke grup bisnis (jika ada)
+        // Mengisi data ke nested group bisnis jika ada
         if (profile.companyName) { 
           this.businessGrp.patchValue({ 
             companyName:    profile.companyName, 
@@ -97,17 +99,19 @@ export class AccountSettingsComponent implements OnInit {
           }); 
         } 
    
-        // 3. Aktifkan validasi & tombol
+        // Menjalankan fungsi listener reaktif
         this.setupConditionalFields(); 
         this.setupSaveButton(); 
+   
+        // Reset status form agar tombol simpan tetap disabled di awal
         this.settingsForm.markAsPristine(); 
         this.settingsForm.markAsUntouched(); 
         
-        // 4. Matikan Loading!
+        // Sukses memuat, matikan loading spinner
         this.isLoading = false; 
       },
       error: (err) => {
-        console.error('Error memuat profil:', err);
+        console.error('Gagal memuat data profil dari AccountService:', err);
         this.isLoading = false; 
       }
     });
@@ -193,7 +197,7 @@ export class AccountSettingsComponent implements OnInit {
         this.saveSuccess = true; 
         setTimeout(() => this.saveSuccess = false, 3000); 
       }, 
-      error: (err: any) => console.error('Save error:', err) // PERBAIKAN: Tambahkan tipe data eksplisit : any
+      error: (err: any) => console.error('Save error:', err)
     }); 
   } 
  
