@@ -1,0 +1,117 @@
+// ==========================================
+// Variabel Warna Tema Putih & Biru
+// ==========================================
+$blue-primary: #0056b3;     // Biru utama untuk tombol utama & judul
+$blue-hover: #004085;       // Biru gelap saat tombol di-hover
+$blue-light: #f0f7ff;       // Biru sangat muda untuk background aksi & info
+$blue-border: #cbd5e1;      // Warna border semi-biru keabuan
+$white: #ffffff;            // Putih bersih untuk card utama
+$text-dark: #1e293b;        // Warna teks utama agar kontras
+
+
+.wizard-container {
+  max-width: 650px;
+  margin: 3rem auto;
+  background-color: $white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid $blue-border;
+  overflow: hidden; // Memastikan progress bar di paling atas melengkung mengikuti border-radius
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+
+  // Custom styling untuk Angular Material Progress Bar
+  mat-progress-bar {
+    height: 6px;
+
+    // Mengubah warna isi loading indicator (Biru)
+    ::ng-deep .mdc-linear-progress__bar-inner {
+      border-color: $blue-primary !important;
+    }
+    // Mengubah warna sisa/buffer loading indicator (Biru Muda)
+    ::ng-deep .mdc-linear-progress__buffer-bar {
+      background-color: $blue-light !important;
+    }
+  }
+
+  // Konten Step didalam switch-case
+  .step-content {
+    padding: 2.5rem 2rem;
+    min-height: 300px; // Mencegah layout meloncat terlalu drastis antar step
+    color: $text-dark;
+
+    // Menghias style internal form (opsional, jika step di-render di dalam container)
+    h3 {
+      color: $blue-primary;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+  }
+
+  // Bagian footer navigasi aksi (Back / Next / Submit)
+  .wizard-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background-color: $blue-light; // Memberikan kontras pemisah di area bawah
+    border-top: 1px solid rgba($blue-border, 0.5);
+
+    // Kustomisasi Tombol bawaan Angular Material
+    button {
+      padding: 0.5rem 1.75rem;
+      font-weight: 500;
+      border-radius: 6px;
+      letter-spacing: 0.3px;
+      transition: all 0.2s ease-in-out;
+
+      // Button Back (Tipe Standard Mat-Button)
+      &[mat-button] {
+        color: $blue-primary;
+
+        &:hover:not([disabled]) {
+          background-color: rgba($blue-primary, 0.08);
+        }
+        
+        &[disabled] {
+          color: #94a3b8;
+        }
+      }
+
+      // Button Next / Submit (Tipe Raised Mat-Raised-Button)
+      &[mat-raised-button] {
+        background-color: $blue-primary !important;
+        color: $white !important;
+
+        &:hover:not([disabled]) {
+          background-color: $blue-hover !important;
+          box-shadow: 0 4px 12px rgba($blue-primary, 0.25);
+        }
+
+        &[disabled] {
+          background-color: #e2e8f0 !important;
+          color: #94a3b8 !important;
+          box-shadow: none !important;
+        }
+      }
+    }
+  }
+}
+
+// Responsivitas untuk layar HP/Mobile
+@media (max-width: 480px) {
+  .wizard-container {
+    margin: 1rem;
+    
+    .step-content {
+      padding: 1.5rem 1rem;
+    }
+    
+    .wizard-actions {
+      padding: 1rem;
+    }
+  }
+}
