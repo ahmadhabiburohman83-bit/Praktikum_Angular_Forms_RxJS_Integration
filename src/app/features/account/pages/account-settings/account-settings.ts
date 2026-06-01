@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, DestroyRef } from '@angular/core'; 
+import { Component, OnInit, inject, DestroyRef, ChangeDetectorRef } from '@angular/core'; // <-- 1. IMPORT CHANGEDETECTORREF
 import { FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule, ValidationErrors } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'; 
@@ -12,7 +12,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
-// 1. INI ADALAH MODUL YANG KETINGGALAN
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 
 import { AccountService } from '../../services/account'; 
@@ -24,7 +23,6 @@ import { noWhitespaceValidator } from '../../../../core/validators/password.vali
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    // 2. MODULNYA DIDAFTARKAN DI SINI
     MatFormFieldModule, 
     MatInputModule,
     MatButtonModule,
@@ -40,6 +38,7 @@ export class AccountSettingsComponent implements OnInit {
   private fb          = inject(FormBuilder); 
   private accountSvc  = inject(AccountService); 
   private destroyRef  = inject(DestroyRef); 
+  private cdr         = inject(ChangeDetectorRef); // <-- 2. INJECT KE DALAM KOMPONEN
 
   settingsForm!: FormGroup; 
   isLoading    = true;   
@@ -81,7 +80,6 @@ export class AccountSettingsComponent implements OnInit {
       next: (profile: any) => {
         this.currentEmail = profile.email; 
    
-        // Mengisi data ke form utama
         this.settingsForm.patchValue({ 
           accountType: profile.accountType, 
           fullName:    profile.fullName, 
@@ -90,7 +88,6 @@ export class AccountSettingsComponent implements OnInit {
           bio:         profile.bio || '', 
         }); 
    
-        // Mengisi data ke nested group bisnis jika ada
         if (profile.companyName) { 
           this.businessGrp.patchValue({ 
             companyName:    profile.companyName, 
@@ -99,20 +96,21 @@ export class AccountSettingsComponent implements OnInit {
           }); 
         } 
    
-        // Menjalankan fungsi listener reaktif
         this.setupConditionalFields(); 
         this.setupSaveButton(); 
    
-        // Reset status form agar tombol simpan tetap disabled di awal
         this.settingsForm.markAsPristine(); 
         this.settingsForm.markAsUntouched(); 
         
-        // Sukses memuat, matikan loading spinner
         this.isLoading = false; 
+        
+        // <-- 3. PAKSA ANGULAR MENGGAMBAR ULANG UI SEKARANG JUGA! -->
+        this.cdr.detectChanges(); 
       },
       error: (err) => {
-        console.error('Gagal memuat data profil dari AccountService:', err);
+        console.error('Gagal memuat data profil:', err);
         this.isLoading = false; 
+        this.cdr.detectChanges(); // Paksa render ulang jika error
       }
     });
   }
@@ -121,9 +119,7 @@ export class AccountSettingsComponent implements OnInit {
     return (ctrl: AbstractControl): Observable<ValidationErrors | null> => { 
       const email = ctrl.value; 
  
-      if (!email) return of(null);                   
-      if (email === this.currentEmail) return of(null); 
-      if (!email.includes('@')) return of(null);     
+      if (!email || email === this.currentEmail || !email.includes('@')) return of(null);     
  
       return timer(700).pipe(   
         switchMap(() => 
@@ -188,20 +184,25 @@ export class AccountSettingsComponent implements OnInit {
     }; 
  
     this.accountSvc.saveProfile(payload).pipe( 
-      finalize(() => this.isSaving = false) 
+      finalize(() => {
+        this.isSaving = false;
+        this.cdr.detectChanges(); // Paksa update UI setelah save
+      }) 
     ).subscribe({ 
       next: () => { 
         this.currentEmail = raw.email;  
         this.settingsForm.markAsPristine();  
         this.canSave = false; 
         this.saveSuccess = true; 
-        setTimeout(() => this.saveSuccess = false, 3000); 
+        setTimeout(() => {
+          this.saveSuccess = false;
+          this.cdr.detectChanges(); // Paksa update UI saat pesan sukses hilang
+        }, 3000); 
       }, 
       error: (err: any) => console.error('Save error:', err)
     }); 
   } 
  
-  // Getters 
   get accountType()  { return this.settingsForm.get('accountType'); } 
   get emailCtrl()    { return this.settingsForm.get('email'); } 
   get businessGrp()  { return this.settingsForm.get('business') as FormGroup; } 
