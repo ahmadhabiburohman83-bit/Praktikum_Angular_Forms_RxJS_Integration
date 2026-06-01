@@ -1,1 +1,27 @@
-<router-outlet></router-outlet>
+<header class="main-navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <span class="brand-icon">⚡</span>
+      <div class="brand-text">
+        <h1>Evaluasi Form & RxJS</h1>
+        <p>Politeknik Negeri Malang</p>
+      </div>
+    </div>
+    
+    <nav class="nav-menu">
+      <a routerLink="/register" routerLinkActive="active-tab" class="nav-item">
+        🧩 Praktikum 1: Register Wizard
+      </a>
+      <a routerLink="/order" routerLinkActive="active-tab" class="nav-item">
+        🛒 Praktikum 2: Form arrays Dinamis
+      </a>
+      <a routerLink="/account" routerLinkActive="active-tab" class="nav-item">
+        ⚙️ Praktikum 3: Account Settings
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main class="content-wrapper">
+  <router-outlet></router-outlet>
+</main>

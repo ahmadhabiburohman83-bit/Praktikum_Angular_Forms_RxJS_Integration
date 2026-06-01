@@ -1,99 +1,149 @@
-<form [formGroup]="orderForm" class="order-form-container">
+<div class="order-container">
   
-  <!-- 1. Input Data Pelanggan -->
-  <mat-card class="section-card customer-section">
-    <mat-card-header>
-      <mat-card-title>Data Pelanggan</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Customer Name</mat-label>
-          <input matInput formControlName="customerName" placeholder="Masukkan nama pelanggan">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Customer Phone</mat-label>
-          <input matInput formControlName="customerPhone" placeholder="Masukkan nomor telepon">
-        </mat-form-field>
+  <div class="order-header">
+    <div class="title-section">
+      <h2>Praktikum 2: Form Pesanan E-Commerce</h2>
+      <p>Sistem Pengelolaan FormArray Dinamis & Real-time Auto-Save Draft</p>
+    </div>
+    @if (lastSaved) {
+      <div class="save-status-badge">
+        <span class="dot-green"></span>
+        Draf disimpan otomatis: {{ lastSaved | date:'HH:mm:ss' }}
       </div>
+    }
+  </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Delivery Address</mat-label>
-        <textarea matInput formControlName="deliveryAddress" placeholder="Alamat pengiriman" rows="2"></textarea>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Notes</mat-label>
-        <textarea matInput formControlName="notes" placeholder="Catatan tambahan (opsional)" rows="2"></textarea>
-      </mat-form-field>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- 2 & 3. Bagian Loop FormArray Items -->
-  <mat-card class="section-card items-section">
-    <mat-card-header>
-      <mat-card-title>Daftar Pesanan</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div formArrayName="items" class="items-array-container">
-        
-        <!-- Loop untuk setiap item pesanan -->
-        <div *ngFor="let item of itemGroups; let i = index" [formGroupName]="i" class="item-row">
-          
-          <!-- Product Search (Live Search dengan Autocomplete) -->
-          <mat-form-field appearance="outline" class="item-input product-search-input">
-            <mat-label>Cari Produk</mat-label>
-            <input type="text" matInput formControlName="productSearch" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-              <!-- Template ini disiapkan untuk opsi dari productSvc -->
-            </mat-autocomplete>
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-card">
+      <div class="card-header">
+        <h3>📋 Data Pelanggan</h3>
+      </div>
+      <div class="card-body">
+        <div class="form-grid-2col">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nama Pelanggan</mat-label>
+            <input matInput formControlName="customerName" placeholder="Masukkan nama pembeli">
+            @if (orderForm.get('customerName')?.hasError('required')) {
+              <mat-error>Nama pembeli wajib diisi</mat-error>
+            }
           </mat-form-field>
 
-          <!-- Unit Price (Readonly) -->
-          <mat-form-field appearance="outline" class="item-input">
-            <mat-label>Unit Price</mat-label>
-            <input matInput type="number" formControlName="unitPrice" readonly>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>No. HP Pelanggan</mat-label>
+            <input matInput formControlName="customerPhone" placeholder="Contoh: 08123456789">
+            @if (orderForm.get('customerPhone')?.hasError('required')) {
+              <mat-error>No. HP wajib diisi</mat-error>
+            }
+            @if (orderForm.get('customerPhone')?.hasError('pattern')) {
+              <mat-error>Format salah (Mulai 08, panjang 10-13 digit angka)</mat-error>
+            }
           </mat-form-field>
-
-          <!-- Quantity -->
-          <mat-form-field appearance="outline" class="item-input">
-            <mat-label>Quantity</mat-label>
-            <input matInput type="number" formControlName="quantity">
-          </mat-form-field>
-
-          <!-- Discount -->
-          <mat-form-field appearance="outline" class="item-input">
-            <mat-label>Discount</mat-label>
-            <input matInput type="number" formControlName="discount">
-          </mat-form-field>
-
-          <!-- Teks subtotal baris -->
-          <div class="subtotal-container">
-            <span>Subtotal:</span>
-            <strong>{{ getRowSubtotal(i) | currency:'IDR' }}</strong>
-          </div>
-
-          <!-- Tombol Hapus Item -->
-          <button mat-button color="warn" type="button" (click)="removeItem(i)" class="remove-btn">
-            Hapus Item
-          </button>
-          
         </div>
 
-      </div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Alamat Pengiriman</mat-label>
+          <textarea matInput formControlName="deliveryAddress" rows="3" placeholder="Tulis alamat lengkap pengiriman paket..."></textarea>
+          @if (orderForm.get('deliveryAddress')?.hasError('required')) {
+            <mat-error>Alamat pengiriman wajib diisi</mat-error>
+          }
+        </mat-form-field>
 
-      <!-- 4. Tombol + Tambah Item -->
-      <div class="add-btn-container">
-        <button mat-raised-button color="primary" type="button" (click)="addItem()">
-          + Tambah Item
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Catatan Tambahan (Opsional)</mat-label>
+          <input matInput formControlName="notes" placeholder="Contoh: Titip ke satpam depan pagar / warna cadangan">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-card item-section">
+      <div class="card-header flex-space">
+        <h3>🛒 Daftar Item Pesanan ({{ items.length }} Produk)</h3>
+        <button mat-flat-button color="primary" type="button" class="btn-add-item" (click)="addItem()">
+          + Tambah Baris Item
         </button>
       </div>
+      
+      <div class="card-body" formArrayName="items">
+        @for (item of itemGroups; track item; let i = $index) {
+          <div [formGroupName]="i" class="item-row-card">
+            
+            <div class="row-number-badge">#{{ i + 1 }}</div>
 
-    </mat-card-content>
-  </mat-card>
+            <div class="item-fields-grid">
+              <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Cari & Pilih Produk</mat-label>
+                <input matInput formControlName="productSearch" [matAutocomplete]="auto" placeholder="Ketik minimal 2 huruf...">
+                
+                @if (searchLoading[i]) {
+                  <mat-spinner matSuffix diameter="18"></mat-spinner>
+                }
+                
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectProduct(i, $event.option.value)">
+                  @for (p of searchResults[i]; track p.id) {
+                    <mat-option [value]="p">
+                      {{ p.title }} — {{ p.price * 15500 | currency:'IDR':'symbol':'1.0-0' }}
+                    </mat-option>
+                  }
+                </mat-autocomplete>
 
-  <!-- 5. Komponen Ringkasan -->
-  <app-order-summary [total]="grandTotal$"></app-order-summary>
+                @if (item.get('productId')?.hasError('required') && item.get('productSearch')?.touched) {
+                  <mat-error>Anda wajib memilih produk dari dropdown</mat-error>
+                }
+              </mat-form-field>
 
-</form>
+              <mat-form-field appearance="outline" class="readonly-field">
+                <mat-label>Harga Satuan</mat-label>
+                <input matInput type="number" formControlName="unitPrice" readonly>
+                <span matPrefix>Rp&nbsp;</span>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Qty</mat-label>
+                <input matInput type="number" formControlName="quantity">
+                @if (item.get('quantity')?.hasError('required')) { <mat-error>Wajib</mat-error> }
+                @if (item.get('quantity')?.hasError('min') || item.get('quantity')?.hasError('max')) { <mat-error>1-999</mat-error> }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Disc %</mat-label>
+                <input matInput type="number" formControlName="discount" min="0" max="100">
+                <span matSuffix>%</span>
+                @if (item.get('discount')?.hasError('min') || item.get('discount')?.hasError('max')) { <mat-error>0-100</mat-error> }
+              </mat-form-field>
+
+              <div class="row-subtotal-display">
+                <span class="subtotal-lbl">Subtotal</span>
+                <span class="subtotal-val">{{ getRowSubtotal(i) | currency:'IDR':'symbol':'1.0-0' }}</span>
+              </div>
+
+              <div class="row-action-delete">
+                <button mat-icon-button type="button" color="warn" (click)="removeItem(i)" [disabled]="items.length === 1" title="Hapus item ini">
+                  ✕
+                </button>
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="order-footer-summary-card">
+      <div class="grand-total-box">
+        <span class="grand-total-label">Total Pembayaran Keseluruhan:</span>
+        <span class="grand-total-amount">{{ (grandTotal$ | async) | currency:'IDR':'symbol':'1.0-0' }}</span>
+      </div>
+
+      <div class="action-buttons-group">
+        <button mat-button type="button" class="btn-cancel" (click)="clearDraft()">
+          Batal / Bersihkan Form
+        </button>
+        <button mat-raised-button color="primary" type="submit" class="btn-submit" [disabled]="orderForm.invalid">
+          Buat Pesanan Sekarang
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>

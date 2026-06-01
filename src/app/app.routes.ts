@@ -16,5 +16,10 @@ export const routes: Routes = [
   {
     path: 'order',
     loadChildren: () => import('./features/order/order-module').then(m => m.OrderModule)
+  },
+  // 4. Load the Account Settings Component (Jalur file disesuaikan menjadi account-settings)
+  {
+    path: 'account',
+    loadComponent: () => import('./features/account/pages/account-settings/account-settings').then(m => m.AccountSettingsComponent)
   }
 ];

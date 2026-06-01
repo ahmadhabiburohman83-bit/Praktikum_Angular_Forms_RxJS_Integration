@@ -1,0 +1,109 @@
+$blue-primary: #0056b3;
+$blue-light: #f0f7ff;
+$blue-border: #cbd5e1;
+$text-dark: #1e293b;
+
+.review-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  h3 {
+    color: $blue-primary;
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+  }
+
+  .review-subtitle {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .review-section {
+    border: 1px solid rgba($blue-border, 0.6);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #ffffff;
+
+    .section-header {
+      background-color: $blue-light;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid rgba($blue-border, 0.5);
+
+      h4 {
+        margin: 0;
+        color: $blue-primary;
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+    }
+
+    .section-body {
+      padding: 0.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+
+      .review-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.9rem;
+
+        &:last-child {
+          border-bottom: none; // Baris terakhir tidak memiliki garis bawah
+        }
+
+        .review-label {
+          color: #64748b;
+          font-weight: 500;
+        }
+
+        .review-value {
+          color: $text-dark;
+          font-weight: 600;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+// ... kode styling yang sudah ada sebelumnya tetap biarkan ...
+
+.review-row {
+  // Tambahkan class pembantu ini agar vertikal alignment ikon & teks seimbang di tengah
+  &.align-center {
+    align-items: center;
+  }
+
+  // Desain kontainer pembungkus nilai password dan tombol mata
+  .review-password-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem; // Jarak tipis antara teks password dan ikon mata
+
+    .password-text {
+      // Memberikan efek font monospace agar titik sensor terlihat konsisten rapi
+      font-family: monospace; 
+      font-size: 1rem;
+    }
+
+    // Mengatur ukuran tombol mata agar lebih kecil dan minimalis khusus di halaman review
+    .review-eye-btn {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        color: #64748b; // Warna abu-abu halus agar tidak terlalu mencolok
+      }
+    }
+  }
+}

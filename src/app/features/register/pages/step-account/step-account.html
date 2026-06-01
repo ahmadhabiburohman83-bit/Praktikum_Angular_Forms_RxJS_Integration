@@ -1,9 +1,9 @@
 <form [formGroup]="form" class="step-account-form">
+  
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Username</mat-label>
     <input matInput formControlName="username" placeholder="Choose a username">
     
-    <!-- Loading spinner saat async validator berjalan -->
     @if (form.get('username')?.pending) {
       <mat-spinner matSuffix diameter="20"></mat-spinner>
     }
@@ -29,22 +29,63 @@
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Password</mat-label>
-    <input matInput type="password" formControlName="password" placeholder="Create a password">
+    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Create a password">
+    
+    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+      <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    
     @if (form.get('password')?.hasError('required')) {
       <mat-error>Password is required.</mat-error>
     }
-    @if (form.get('password')?.hasError('minlength')) {
-      <mat-error>Password must be at least 8 characters long.</mat-error>
-    }
   </mat-form-field>
+
+  <div class="password-checklist">
+    <p class="checklist-title">Password harus memenuhi kriteria berikut:</p>
+    <ul>
+      <li [class.is-valid]="form.get('password')?.value && !form.get('password')?.hasError('tooShort')"
+          [class.is-invalid]="form.get('password')?.value && form.get('password')?.hasError('tooShort')">
+        <span class="icon">{{ form.get('password')?.value && !form.get('password')?.hasError('tooShort') ? '✓' : '○' }}</span>
+        Minimal 8 karakter
+      </li>
+
+      <li [class.is-valid]="form.get('password')?.value && !form.get('password')?.hasError('noUppercase')"
+          [class.is-invalid]="form.get('password')?.value && form.get('password')?.hasError('noUppercase')">
+        <span class="icon">{{ form.get('password')?.value && !form.get('password')?.hasError('noUppercase') ? '✓' : '○' }}</span>
+        Minimal 1 huruf kapital (A-Z)
+      </li>
+
+      <li [class.is-valid]="form.get('password')?.value && !form.get('password')?.hasError('noLowercase')"
+          [class.is-invalid]="form.get('password')?.value && form.get('password')?.hasError('noLowercase')">
+        <span class="icon">{{ form.get('password')?.value && !form.get('password')?.hasError('noLowercase') ? '✓' : '○' }}</span>
+        Minimal 1 huruf kecil (a-z)
+      </li>
+
+      <li [class.is-valid]="form.get('password')?.value && !form.get('password')?.hasError('noNumber')"
+          [class.is-invalid]="form.get('password')?.value && form.get('password')?.hasError('noNumber')">
+        <span class="icon">{{ form.get('password')?.value && !form.get('password')?.hasError('noNumber') ? '✓' : '○' }}</span>
+        Minimal 1 angka (0-9)
+      </li>
+
+      <li [class.is-valid]="form.get('password')?.value && !form.get('password')?.hasError('noSymbol')"
+          [class.is-invalid]="form.get('password')?.value && form.get('password')?.hasError('noSymbol')">
+        <span class="icon">{{ form.get('password')?.value && !form.get('password')?.hasError('noSymbol') ? '✓' : '○' }}</span>
+        Minimal 1 simbol khusus (!@#$%^&*)
+      </li>
+    </ul>
+  </div>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Confirm Password</mat-label>
-    <input matInput type="password" formControlName="confirmPassword" placeholder="Confirm your password">
+    <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword" placeholder="Confirm your password">
+    
+    <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+      <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+
     @if (form.get('confirmPassword')?.hasError('required')) {
       <mat-error>Please confirm your password.</mat-error>
     }
-    <!-- Error di level FormGroup untuk mis-match -->
     @if (form.hasError('passwordMismatch')) {
       <mat-error>Passwords do not match.</mat-error>
     }
@@ -60,4 +101,5 @@
       </mat-error>
     }
   </div>
+
 </form>

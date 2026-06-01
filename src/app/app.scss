@@ -1,0 +1,97 @@
+$blue-primary: #0056b3;
+$blue-dark: #003d82;
+$blue-light: #e6f0fa;
+$white: #ffffff;
+$text-main: #334155;
+
+body {
+  margin: 0;
+  background-color: #f8fafc;
+  color: $text-main;
+}
+
+// --- Desain Navbar ---
+.main-navbar {
+  background-color: $white;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0.75rem 0;
+
+  .nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  // Identitas Brand Kiri
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .brand-icon { font-size: 1.5rem; }
+    .brand-text {
+      h1 { margin: 0; font-size: 1.1rem; color: $blue-primary; font-weight: 700; }
+      p { margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 500; }
+    }
+  }
+
+  // Menu Navigasi Kanan
+  .nav-menu {
+    display: flex;
+    gap: 0.5rem;
+
+    .nav-item {
+      text-decoration: none;
+      color: #475569;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #f1f5f9;
+        color: $blue-primary;
+      }
+    }
+
+    // Class otomatis menyala saat rute aktif sesuai halaman browser
+    .active-tab {
+      background-color: $blue-light !important;
+      color: $blue-primary !important;
+      box-shadow: inset 0 -2px 0 $blue-primary;
+    }
+  }
+}
+
+// --- Kontainer Pembungkus Konten Bawah ---
+.content-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+// --- Responsif Mobile View ---
+@media (max-width: 768px) {
+  .main-navbar .nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+    
+    .nav-menu {
+      width: 100%;
+      flex-direction: column;
+      gap: 0.25rem;
+      
+      .nav-item { width: 100%; box-sizing: border-box; }
+    }
+  }
+}

@@ -1,0 +1,147 @@
+$blue-primary: #0056b3;
+$blue-hover: #004085;
+$blue-light: #f0f7ff;
+$white: #ffffff;
+$border-color: #cbd5e1;
+$text-dark: #1e293b;
+
+.settings-container {
+  max-width: 750px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: sans-serif;
+
+  // Loading screen tengah-tengah
+  .loading-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 0;
+    color: #64748b;
+    gap: 1rem;
+    p { font-weight: 500; }
+  }
+
+  .settings-header {
+    margin-bottom: 1rem;
+    h2 { margin: 0; color: $blue-primary; font-weight: 700; }
+    p { margin: 0.25rem 0 0; color: #64748b; font-size: 0.9rem; }
+  }
+
+  // --- Indikator Status Bar ---
+  .status-bar {
+    margin-bottom: 1.25rem;
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-width: 1px;
+      border-style: solid;
+      
+      mat-icon { font-size: 18px; width: 18px; height: 18px; }
+    }
+
+    .warn-badge {
+      background-color: #fffbeb; color: #b45309; border-color: #fde68a;
+    }
+    .success-badge {
+      background-color: #ecfdf5; color: #047857; border-color: #a7f3d0;
+    }
+    .info-badge {
+      background-color: #f8fafc; color: #475569; border-color: #e2e8f0;
+    }
+  }
+
+  // --- Base Component Card ---
+  .settings-card {
+    background: $white;
+    border: 1px solid rgba($border-color, 0.6);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+
+    .card-header {
+      background-color: #fafafa;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid #f1f5f9;
+      h3 { margin: 0; font-size: 0.95rem; color: $text-dark; font-weight: 700; }
+    }
+
+    .card-body {
+      padding: 1.25rem;
+    }
+  }
+
+  .business-card {
+    border-left: 4px solid $blue-primary;
+  }
+
+  // --- Layout utilities ---
+  .form-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .full-width { width: 100%; }
+  .separator-top { margin-top: 0.5rem; }
+  .loading-hint { color: $blue-primary; font-weight: 500; }
+
+  // --- Actions Button Area ---
+  .actions-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+
+    .save-progress {
+      width: 180px;
+      border-radius: 4px;
+    }
+
+    .btn-save-settings {
+      padding: 0.65rem 2.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 6px;
+      background-color: $blue-primary !important;
+      color: $white !important;
+
+      &:disabled {
+        background-color: #e2e8f0 !important;
+        color: #94a3b8 !important;
+      }
+      &:hover:not([disabled]) {
+        background-color: $blue-hover !important;
+      }
+    }
+  }
+}
+
+// --- Animasi CSS Modern (@if transition simulation) ---
+.animate-slide {
+  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-fade {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .settings-container .form-grid-2col { grid-template-columns: 1fr; }
+}

@@ -9,7 +9,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { StepPersonal } from '../step-personal/step-personal';
 import { StepAccountComponent } from '../step-account/step-account';
-import { StepReview } from '../step-review/step-review';
+import { StepReviewComponent } from '../step-review/step-review'; // <-- Tambahkan kata Component
 
 // Import Custom Validators
 import { 
@@ -31,7 +31,7 @@ import { UsernameAsyncValidator } from '../../../../core/validators/username-asy
     MatProgressBarModule,
     StepPersonal,
     StepAccountComponent,
-    StepReview
+    StepReviewComponent
   ],
   templateUrl: './register-wizard.html',
   styleUrls: ['./register-wizard.scss'] 

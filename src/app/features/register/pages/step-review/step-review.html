@@ -1,1 +1,61 @@
-<p>step-review works!</p>
+<div class="review-container">
+  <h3>📋 Konfirmasi Data Anda</h3>
+  <p class="review-subtitle">Periksa kembali seluruh data Anda sebelum melakukan pendaftaran final.</p>
+
+  <div class="review-section">
+    <div class="section-header">
+      <h4>Data Pribadi</h4>
+    </div>
+    <div class="section-body">
+      <div class="review-row">
+        <span class="review-label">Nama Lengkap</span>
+        <span class="review-value">{{ allValues?.firstName }} {{ allValues?.lastName }}</span>
+      </div>
+      <div class="review-row">
+        <span class="review-label">NIK</span>
+        <span class="review-value">{{ allValues?.nik }}</span>
+      </div>
+      <div class="review-row">
+        <span class="review-label">Jenis Kelamin</span>
+        <span class="review-value">
+          {{ allValues?.gender === 'male' || allValues?.gender === 'L' ? 'Laki-laki' : 'Perempuan' }}
+        </span>
+      </div>
+      <div class="review-row">
+        <span class="review-label">Tanggal Lahir</span>
+        <span class="review-value">{{ allValues?.birthDate | date:'dd MMMM yyyy' }}</span>
+      </div>
+      <div class="review-row">
+        <span class="review-label">No. HP</span>
+        <span class="review-value">{{ allValues?.phone }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="review-section">
+    <div class="section-header">
+      <h4>Data Akun</h4>
+    </div>
+    <div class="section-body">
+      <div class="review-row">
+        <span class="review-label">Username</span>
+        <span class="review-value">@{{ allValues?.username }}</span>
+      </div>
+      <div class="review-row">
+        <span class="review-label">Email</span>
+        <span class="review-value">{{ allValues?.email }}</span>
+      </div>
+      <div class="review-row align-center">
+        <span class="review-label">Password</span>
+        <div class="review-password-wrapper">
+          <span class="review-value password-text">
+            {{ showPassword ? allValues?.password : '••••••••' }}
+          </span>
+          <button mat-icon-button type="button" (click)="showPassword = !showPassword" class="review-eye-btn">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
