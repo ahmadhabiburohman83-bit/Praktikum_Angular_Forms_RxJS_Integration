@@ -5,8 +5,9 @@
       <mat-spinner diameter="50"></mat-spinner>
       <p>Memuat profil akun...</p>
     </div>
-  } @else {
-    
+  } 
+  
+  @else {
     <div class="settings-header">
       <h2>Praktikum 3: Pengaturan Akun</h2>
       <p>Ubah informasi profil, validasi email asinkron, dan form bersyarat.</p>
@@ -15,7 +16,7 @@
     <div class="status-bar">
       @if (settingsForm.dirty && !saveSuccess) {
         <div class="badge warn-badge">
-          <mat-icon>history</mat-icon> Ada perubahan yang belum disimpan
+          <mat-icon>history</mat-icon> Ada perubahan belum disimpan
         </div>
       } @else if (saveSuccess) {
         <div class="badge success-badge animate-fade">
@@ -32,7 +33,6 @@
       
       <div class="settings-card">
         <div class="card-body">
-          
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Tipe Akun</mat-label>
             <mat-select formControlName="accountType">
@@ -44,56 +44,27 @@
           <div class="form-grid-2col">
             <mat-form-field appearance="outline">
               <mat-label>Nama Lengkap</mat-label>
-              <input matInput formControlName="fullName" placeholder="Nama lengkap Anda">
-              @if (settingsForm.get('fullName')?.hasError('required') || settingsForm.get('fullName')?.hasError('whitespaceOnly')) {
-                <mat-error>Nama wajib diisi</mat-error>
-              }
+              <input matInput formControlName="fullName">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>No. HP</mat-label>
-              <input matInput formControlName="phone" placeholder="Contoh: 0812345678">
-              @if (settingsForm.get('phone')?.hasError('required')) {
-                <mat-error>No. HP wajib diisi</mat-error>
-              }
-              @if (settingsForm.get('phone')?.hasError('pattern')) {
-                <mat-error>Format salah (Mulai 08, 10-13 digit)</mat-error>
-              }
+              <input matInput formControlName="phone">
             </mat-form-field>
           </div>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Alamat Email</mat-label>
-            <input matInput type="email" formControlName="email" placeholder="nama@email.com">
-            
+            <input matInput type="email" formControlName="email">
             @if (emailCtrl?.pending) {
               <mat-spinner matSuffix diameter="18"></mat-spinner>
-            }
-
-            @if (emailCtrl?.pending) {
-              <mat-hint class="loading-hint">🔄 Memeriksa ketersediaan email...</mat-hint>
-            }
-
-            @if (emailCtrl?.hasError('required')) {
-              <mat-error>Email wajib diisi</mat-error>
-            }
-            @if (emailCtrl?.hasError('email')) {
-              <mat-error>Format email tidak valid</mat-error>
-            }
-            @if (emailCtrl?.hasError('emailTaken')) {
-              <mat-error>⚠️ Email sudah digunakan akun lain</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Bio Singkat (Maksimal 200 Karakter)</mat-label>
-            <textarea matInput formControlName="bio" rows="3" placeholder="Tulis deskripsi singkat diri Anda..."></textarea>
-            <mat-hint align="end">{{ settingsForm.get('bio')?.value?.length || 0 }}/200</mat-hint>
-            @if (settingsForm.get('bio')?.hasError('maxlength')) {
-              <mat-error>Bio tidak boleh melebihi 200 karakter</mat-error>
-            }
+            <mat-label>Bio Singkat</mat-label>
+            <textarea matInput formControlName="bio" rows="3"></textarea>
           </mat-form-field>
-
         </div>
       </div>
 
@@ -104,46 +75,24 @@
           </div>
           <div class="card-body">
             <div class="form-grid-2col">
-              
               <mat-form-field appearance="outline">
                 <mat-label>Nama Perusahaan</mat-label>
-                <input matInput formControlName="companyName" placeholder="PT / CV Nama Usaha">
-                @if (businessGrp.get('companyName')?.hasError('required')) {
-                  <mat-error>Nama perusahaan wajib diisi</mat-error>
-                }
-                @if (businessGrp.get('companyName')?.hasError('minlength')) {
-                  <mat-error>Minimal terdiri dari 3 karakter</mat-error>
-                }
+                <input matInput formControlName="companyName">
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>Nomor NPWP</mat-label>
-                <input matInput formControlName="npwp" placeholder="00.000.000.0-000.000">
-                <mat-hint>Format: 00.000.000.0-000.000</mat-hint>
-                @if (businessGrp.get('npwp')?.hasError('required')) {
-                  <mat-error>NPWP wajib diisi untuk akun bisnis</mat-error>
-                }
-                @if (businessGrp.get('npwp')?.hasError('pattern')) {
-                  <mat-error>Format NPWP tidak valid</mat-error>
-                }
+                <input matInput formControlName="npwp">
               </mat-form-field>
-
             </div>
-
+            
             <mat-form-field appearance="outline" class="full-width separator-top">
               <mat-label>Sektor Usaha</mat-label>
               <mat-select formControlName="businessSector">
                 <mat-option value="retail">Retail / Perdagangan</mat-option>
-                <mat-option value="manufacturing">Manufaktur / Pabrik</mat-option>
-                <mat-option value="service">Jasa / Konsultan</mat-option>
                 <mat-option value="technology">Teknologi / StartUp</mat-option>
-                <mat-option value="others">Lainnya</mat-option>
               </mat-select>
-              @if (businessGrp.get('businessSector')?.hasError('required')) {
-                <mat-error>Silakan pilih sektor usaha perusahaan</mat-error>
-              }
             </mat-form-field>
-
           </div>
         </div>
       }
@@ -152,16 +101,10 @@
         @if (isSaving) {
           <mat-progress-bar mode="indeterminate" class="save-progress"></mat-progress-bar>
         }
-        
-        <button mat-raised-button 
-                color="primary" 
-                type="submit" 
-                class="btn-save-settings" 
-                [disabled]="!canSave || isSaving">
+        <button mat-raised-button color="primary" type="submit" class="btn-save-settings" [disabled]="!canSave || isSaving">
           {{ isSaving ? 'Menyimpan...' : 'Simpan Perubahan' }}
         </button>
       </div>
-
     </form>
   }
 </div>

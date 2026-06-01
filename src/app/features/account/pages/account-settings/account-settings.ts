@@ -12,7 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatFormFieldModule } from '@angular/material/form-field'; // 1. TULIS IMPORT INI
 // PERBAIKAN: Jalur nama file diubah dari account. menjadi account.service
 import { AccountService } from '../../services/account'; 
 import { noWhitespaceValidator } from '../../../../core/validators/password.validator'; 
@@ -23,6 +23,7 @@ import { noWhitespaceValidator } from '../../../../core/validators/password.vali
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
@@ -54,7 +55,7 @@ export class AccountSettingsComponent implements OnInit {
   buildForm() { 
     this.settingsForm = this.fb.group({ 
       accountType: ['personal', Validators.required], 
-      fullName: ['', [Validators.required, noWhitespaceValidator()]], 
+      fullName: ['', [Validators.required, noWhitespaceValidator]], 
       email: [ 
         '', 
         [Validators.required, Validators.email], 
@@ -78,7 +79,7 @@ export class AccountSettingsComponent implements OnInit {
       next: (profile: any) => {
         this.currentEmail = profile.email; 
    
-        // Mengisi data ke form utama
+        // 1. Isi data ke form utama
         this.settingsForm.patchValue({ 
           accountType: profile.accountType, 
           fullName:    profile.fullName, 
@@ -87,7 +88,7 @@ export class AccountSettingsComponent implements OnInit {
           bio:         profile.bio || '', 
         }); 
    
-        // Mengisi data ke nested group bisnis jika ada
+        // 2. Isi data ke grup bisnis (jika ada)
         if (profile.companyName) { 
           this.businessGrp.patchValue({ 
             companyName:    profile.companyName, 
@@ -96,20 +97,17 @@ export class AccountSettingsComponent implements OnInit {
           }); 
         } 
    
-        // Menjalankan fungsi listener reaktif
+        // 3. Aktifkan validasi & tombol
         this.setupConditionalFields(); 
         this.setupSaveButton(); 
-   
-        // Reset status form agar tombol simpan tetap disabled di awal
         this.settingsForm.markAsPristine(); 
         this.settingsForm.markAsUntouched(); 
         
-        // Sukses memuat, matikan loading spinner
+        // 4. Matikan Loading!
         this.isLoading = false; 
       },
       error: (err) => {
-        // Jika API simulasi gagal/error, tangkap di sini agar UI tidak stuck loading
-        console.error('Gagal memuat data profil dari AccountService:', err);
+        console.error('Error memuat profil:', err);
         this.isLoading = false; 
       }
     });
