@@ -21,5 +21,10 @@ export const routes: Routes = [
   {
     path: 'account',
     loadComponent: () => import('./features/account/pages/account-settings/account-settings').then(m => m.AccountSettingsComponent)
+  },
+  // 5. Fallback route for 404 Not Found
+  {
+    path: '**',
+    redirectTo: 'register'
   }
 ];

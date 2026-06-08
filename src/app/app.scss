@@ -1,20 +1,18 @@
-$blue-primary: #0056b3;
-$blue-dark: #003d82;
-$blue-light: #e6f0fa;
-$white: #ffffff;
-$text-main: #334155;
-
-body {
-  margin: 0;
-  background-color: #f8fafc;
-  color: $text-main;
-}
+// Modern Dark Aesthetic Variables (imported from global if needed, or defined locally for fallback)
+$bg-primary: var(--bg-primary, #0A0A0A);
+$bg-secondary: var(--bg-secondary, #111827);
+$blue-dark: var(--blue-dark, #1E3A8A);
+$blue-accent: var(--blue-accent, #2563EB);
+$text-primary: var(--text-primary, #FFFFFF);
+$text-secondary: var(--text-secondary, #CBD5E1);
 
 // --- Desain Navbar ---
 .main-navbar {
-  background-color: $white;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  background-color: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -39,8 +37,8 @@ body {
 
     .brand-icon { font-size: 1.5rem; }
     .brand-text {
-      h1 { margin: 0; font-size: 1.1rem; color: $blue-primary; font-weight: 700; }
-      p { margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 500; }
+      h1 { margin: 0; font-size: 1.1rem; color: $text-primary; font-weight: 700; text-shadow: 0 0 10px rgba(37, 99, 235, 0.3); }
+      p { margin: 0; font-size: 0.75rem; color: $text-secondary; font-weight: 500; }
     }
   }
 
@@ -51,24 +49,24 @@ body {
 
     .nav-item {
       text-decoration: none;
-      color: #475569;
+      color: $text-secondary;
       font-size: 0.85rem;
       font-weight: 600;
       padding: 0.6rem 1rem;
       border-radius: 6px;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
 
       &:hover {
-        background-color: #f1f5f9;
-        color: $blue-primary;
+        background-color: rgba(37, 99, 235, 0.1);
+        color: $text-primary;
       }
     }
 
     // Class otomatis menyala saat rute aktif sesuai halaman browser
     .active-tab {
-      background-color: $blue-light !important;
-      color: $blue-primary !important;
-      box-shadow: inset 0 -2px 0 $blue-primary;
+      background-color: rgba(37, 99, 235, 0.2) !important;
+      color: $blue-accent !important;
+      box-shadow: inset 0 -2px 0 $blue-accent;
     }
   }
 }
@@ -77,7 +75,8 @@ body {
 .content-wrapper {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 1rem 0;
+  padding: 2rem 1rem;
+  min-height: calc(100vh - 70px);
 }
 
 // --- Responsif Mobile View ---

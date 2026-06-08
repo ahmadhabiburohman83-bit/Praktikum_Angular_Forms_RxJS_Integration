@@ -1,8 +1,8 @@
 // ==========================================
-// Variabel Warna Pendukung Tema Putih & Biru
+// Modern Dark Theme Variables
 // ==========================================
-$blue-primary: #0056b3;     // Biru utama untuk fokus outline
-$text-dark: #1e293b;        // Warna teks utama
+$blue-accent: var(--blue-accent, #2563EB);
+$text-primary: var(--text-primary, #FFFFFF);
 
 .step-personal-form {
   display: flex;
@@ -11,44 +11,39 @@ $text-dark: #1e293b;        // Warna teks utama
   width: 100%;
   margin: 0 auto;
 
-  // Gaya dasar komponen form field
   .full-width {
     width: 100%;
     margin-bottom: 0.5rem;
 
-    // --- Kustomisasi Warna Fokus Angular Material Menjadi Biru ---
     &.mat-form-field-focused {
       ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
       ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
       ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
-        border-color: $blue-primary !important;
+        border-color: $blue-accent !important;
         border-width: 2px !important;
       }
       ::ng-deep .mdc-floating-label {
-        color: $blue-primary !important;
+        color: $blue-accent !important;
       }
     }
 
-    // --- Kustomisasi Warna Tombol & Kalender Datepicker ---
     ::ng-deep .mat-datepicker-toggle {
-      color: rgba($text-dark, 0.54);
+      color: rgba(255, 255, 255, 0.6);
       
       &.mat-datepicker-toggle-active {
-        color: $blue-primary !important;
+        color: $blue-accent !important;
       }
     }
   }
 }
 
-// --- Responsive Grid Layout untuk Tampilan Desktop/Tablet ---
 @media (min-width: 600px) {
   .step-personal-form {
     display: grid;
-    grid-template-columns: 1fr 1fr; // Membagi menjadi 2 kolom seimbang
+    grid-template-columns: 1fr 1fr; 
     column-gap: 1.25rem;
     row-gap: 0.25rem;
 
-    // Menjadikan kolom NIK dan Nomor Telepon memenuhi 2 kolom penuh
     mat-form-field:nth-child(3), // NIK
     mat-form-field:nth-child(6)  // Phone
     {
@@ -57,7 +52,6 @@ $text-dark: #1e293b;        // Warna teks utama
   }
 }
 
-// Merapikan jarak teks error agar presisi di bawah kolom outline
 ::ng-deep .mat-mdc-form-field-subscript-wrapper {
   margin-bottom: 0.25rem;
 }

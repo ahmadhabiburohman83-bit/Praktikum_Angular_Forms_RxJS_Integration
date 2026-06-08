@@ -1,56 +1,58 @@
 // ==========================================
-// Variabel Warna Tema Putih & Biru
+// Modern Dark Theme Variables (Local reference)
 // ==========================================
-$blue-primary: #0056b3;     // Biru utama untuk tombol utama & judul
-$blue-hover: #004085;       // Biru gelap saat tombol di-hover
-$blue-light: #f0f7ff;       // Biru sangat muda untuk background aksi & info
-$blue-border: #cbd5e1;      // Warna border semi-biru keabuan
-$white: #ffffff;            // Putih bersih untuk card utama
-$text-dark: #1e293b;        // Warna teks utama agar kontras
-$green-success: #10b981;    // Hijau cerah penanda step selesai (completed)
+$bg-primary: var(--bg-primary, #0A0A0A);
+$bg-secondary: var(--bg-secondary, #111827);
+$blue-dark: var(--blue-dark, #1E3A8A);
+$blue-accent: var(--blue-accent, #2563EB);
+$text-primary: var(--text-primary, #FFFFFF);
+$text-secondary: var(--text-secondary, #CBD5E1);
+$green-success: #10b981; 
+$border-color: rgba(255, 255, 255, 0.1);
 
 .wizard-container {
-  max-width: 680px; // Sedikit dilebarkan agar muat dengan baris badge
+  max-width: 680px; 
   margin: 3rem auto;
-  background-color: $white;
-  border-radius: 14px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba($blue-border, 0.7);
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  color: $text-primary;
 
-  // --- STYLING BARU: Header Section ---
   .wizard-header {
     padding: 1.75rem 2rem 1.25rem;
-    background: linear-gradient(135deg, $white 0%, $blue-light 100%);
-    border-bottom: 1px solid rgba($blue-border, 0.4);
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.5) 0%, rgba(17, 24, 39, 1) 100%);
+    border-bottom: 1px solid $border-color;
     text-align: center;
 
     h2 {
-      color: $blue-primary;
+      color: $text-primary;
       margin: 0;
       font-size: 1.4rem;
       font-weight: 700;
       letter-spacing: -0.5px;
+      text-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
     }
     p {
       margin: 0.35rem 0 0;
-      color: #64748b;
+      color: $text-secondary;
       font-size: 0.85rem;
       font-weight: 500;
     }
   }
 
-  // --- STYLING BARU: Step Indicators Row (Visual Badges) ---
   .step-indicators-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1.25rem 2.5rem;
-    background-color: $white;
-    border-bottom: 1px solid rgba($blue-border, 0.3);
+    background-color: transparent;
+    border-bottom: 1px solid $border-color;
     
     .step-badge {
       display: flex;
@@ -64,9 +66,9 @@ $green-success: #10b981;    // Hijau cerah penanda step selesai (completed)
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        border: 2px solid #e2e8f0;
-        background-color: $white;
-        color: #94a3b8;
+        border: 2px solid $text-secondary;
+        background-color: $bg-secondary;
+        color: $text-secondary;
         font-weight: 600;
         font-size: 0.85rem;
         transition: all 0.3s ease;
@@ -75,108 +77,104 @@ $green-success: #10b981;    // Hijau cerah penanda step selesai (completed)
       .badge-label {
         font-size: 0.9rem;
         font-weight: 500;
-        color: #94a3b8;
+        color: $text-secondary;
         transition: all 0.3s ease;
       }
 
-      // State Saat Step Sedang Aktif (Active)
       &.active {
         .badge-number {
-          border-color: $blue-primary;
-          background-color: $blue-primary;
-          color: $white;
-          box-shadow: 0 0 0 4px rgba($blue-primary, 0.18); // Efek lingkaran bercahaya
+          border-color: $blue-accent;
+          background-color: $blue-accent;
+          color: $text-primary;
+          box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); 
         }
         .badge-label {
-          color: $blue-primary;
+          color: $blue-accent;
           font-weight: 600;
         }
       }
 
-      // State Saat Step Sudah Terlewati (Completed)
       &.completed {
         .badge-number {
           border-color: $green-success;
           background-color: $green-success;
-          color: $white;
+          color: $text-primary;
         }
         .badge-label {
-          color: $text-dark;
+          color: $text-primary;
           font-weight: 500;
         }
       }
     }
 
-    // Garis Penghubung antar Lingkaran Angka
     .step-connector {
       flex: 1;
       height: 2px;
-      background-color: #e2e8f0;
+      background-color: $border-color;
       margin: 0 1rem;
       transition: all 0.4s ease;
 
       &.active {
-        background-color: $blue-primary;
+        background-color: $blue-accent;
+        box-shadow: 0 0 8px $blue-accent;
       }
     }
   }
 
-  // Custom styling untuk Angular Material Progress Bar
   mat-progress-bar {
-    height: 5px;
+    height: 3px;
 
     ::ng-deep .mdc-linear-progress__bar-inner {
-      border-color: $blue-primary !important;
+      border-color: $blue-accent !important;
     }
     ::ng-deep .mdc-linear-progress__buffer-bar {
-      background-color: $blue-light !important;
+      background-color: rgba(255, 255, 255, 0.05) !important;
     }
   }
 
-  // Konten internal formulir
   .step-content {
     padding: 2.5rem 2rem;
     min-height: 320px;
-    color: $text-dark;
+    color: $text-primary;
   }
 
-  // Footer Navigasi
   .wizard-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.25rem 2rem;
-    background-color: $blue-light;
-    border-top: 1px solid rgba($blue-border, 0.4);
+    background-color: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid $border-color;
 
     button {
       padding: 0.6rem 2rem;
       font-weight: 600;
-      border-radius: 8px; // Sudut tombol dibuat sedikit lebih melengkung modern
+      border-radius: 8px; 
       letter-spacing: 0.3px;
-      transition: all 0.2s ease-in-out;
+      transition: all 0.3s ease-in-out;
 
       &[mat-button] {
-        color: $blue-primary;
+        color: $text-secondary;
         &:hover:not([disabled]) {
-          background-color: rgba($blue-primary, 0.08);
+          background-color: rgba(255, 255, 255, 0.1);
+          color: $text-primary;
         }
         &[disabled] {
-          color: #cbd5e1;
+          color: rgba(255, 255, 255, 0.3);
         }
       }
 
       &[mat-raised-button] {
-        background-color: $blue-primary !important;
-        color: $white !important;
+        background-color: $blue-accent !important;
+        color: $text-primary !important;
 
         &:hover:not([disabled]) {
-          background-color: $blue-hover !important;
-          box-shadow: 0 4px 12px rgba($blue-primary, 0.2);
+          background-color: $blue-dark !important;
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.5);
         }
         &[disabled] {
-          background-color: #e2e8f0 !important;
-          color: #94a3b8 !important;
+          background-color: rgba(255, 255, 255, 0.1) !important;
+          color: rgba(255, 255, 255, 0.3) !important;
           box-shadow: none !important;
         }
       }
@@ -184,7 +182,6 @@ $green-success: #10b981;    // Hijau cerah penanda step selesai (completed)
   }
 }
 
-// --- Responsive Breakpoints untuk HP (Mobile friendly) ---
 @media (max-width: 580px) {
   .wizard-container {
     margin: 1rem;
@@ -197,7 +194,6 @@ $green-success: #10b981;    // Hijau cerah penanda step selesai (completed)
 
     .step-indicators-container {
       padding: 1rem;
-      // Sembunyikan teks label "Data Pribadi, Akun, Review" di HP agar tidak berhimpitan, sisakan lingkaran angkanya saja
       .badge-label {
         display: none;
       }

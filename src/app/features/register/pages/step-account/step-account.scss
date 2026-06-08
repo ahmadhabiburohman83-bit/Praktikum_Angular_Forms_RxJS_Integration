@@ -1,85 +1,78 @@
 // ==========================================
-// Variabel Warna Pendukung Tema Putih & Biru
+// Modern Dark Theme Variables
 // ==========================================
-$blue-primary: #0056b3;     // Biru utama
-$blue-light: #f0f7ff;       // Biru muda transparan untuk container terms
-$text-dark: #1e293b;        // Warna teks utama
-$error-color: #f44336;      // Warna error merah material
-
+$blue-accent: var(--blue-accent, #2563EB);
+$text-primary: var(--text-primary, #FFFFFF);
+$text-secondary: var(--text-secondary, #CBD5E1);
+$bg-secondary: var(--bg-secondary, #111827);
+$error-color: #f44336;      
+$green-success: #10b981; 
+$error-red: #ef4444;      
 
 .step-account-form {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem; // Jarak tipis antar form-field secara vertikal
+  gap: 0.25rem; 
   width: 100%;
   margin: 0 auto;
 
-  // Utilitas penuh untuk Form Field
   .full-width {
     width: 100%;
     margin-bottom: 0.5rem;
 
-    // --- Kustomisasi Warna Fokus Angular Material Menjadi Biru ---
     &.mat-form-field-focused {
       ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
       ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
       ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
-        border-color: $blue-primary !important;
+        border-color: $blue-accent !important;
         border-width: 2px !important;
       }
       ::ng-deep .mdc-floating-label {
-        color: $blue-primary !important;
+        color: $blue-accent !important;
       }
     }
   }
 
-  // --- Kustomisasi Loading Spinner Suffix Username ---
   mat-spinner[matSuffix] {
     display: inline-block;
     margin-right: 8px;
 
     ::ng-deep circle {
-      stroke: $blue-primary !important; // Spinner mengikuti warna biru tema
+      stroke: $blue-accent !important; 
     }
   }
 
-  // --- Container Box Syarat & Ketentuan (Terms & Conditions) ---
   .terms-container {
     margin-top: 1rem;
     padding: 1rem;
-    background-color: $blue-light; // Box background biru muda agar kontras dengan card putih
+    background-color: rgba(255, 255, 255, 0.05); 
     border-radius: 8px;
-    border: 1px solid rgba($blue-primary, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
     gap: 4px;
 
-    // Kustomisasi warna checkbox Material saat di-centang
     mat-checkbox {
-      color: $text-dark;
+      color: $text-primary;
       font-size: 0.95rem;
       font-weight: 500;
 
-      // Mengubah warna background centang menjadi biru
       &.mat-mdc-checkbox-checked {
         ::ng-deep .mdc-checkbox__background {
-          background-color: $blue-primary !important;
-          border-color: $blue-primary !important;
+          background-color: $blue-accent !important;
+          border-color: $blue-accent !important;
         }
       }
       
-      // Mengubah warna ripple efek sentuh menjadi biru muda
       ::ng-deep .mat-mdc-checkbox-ripple .mdc-ripple-surface::before {
-        background-color: rgba($blue-primary, 0.1) !important;
+        background-color: rgba(37, 99, 235, 0.1) !important;
       }
     }
 
-    // Teks error kustom di bawah checkbox
     .error-text {
       color: $error-color;
       font-weight: 500;
       font-size: 0.8rem !important;
-      // Memberikan jarak geser ke kanan agar tulisan sejajar rapi setelah kotak checkbox
       padding-left: 2.3rem; 
       margin-top: 2px;
       display: block;
@@ -87,27 +80,22 @@ $error-color: #f44336;      // Warna error merah material
   }
 }
 
-// Menyesuaikan margin error bawaan mat-form-field agar tidak terlalu renggang
 ::ng-deep .mat-mdc-form-field-subscript-wrapper {
   margin-bottom: 0.25rem;
 }
-$blue-primary: #0056b3;
-$text-dark: #1e293b;
-$green-success: #10b981; // Hijau sukses untuk syarat yang lolos
-$error-red: #ef4444;      // Merah untuk syarat yang dilanggar
 
 .password-checklist {
   margin: -0.25rem 0 1rem;
   padding: 0.85rem 1rem;
-  background-color: #f8fafc; // Latar abu-abu terang bersih
+  background-color: rgba(0, 0, 0, 0.2); 
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 
   .checklist-title {
     margin: 0 0 0.5rem 0;
     font-size: 0.85rem;
     font-weight: 600;
-    color: #475569;
+    color: $text-primary;
   }
 
   ul {
@@ -120,7 +108,7 @@ $error-red: #ef4444;      // Merah untuk syarat yang dilanggar
 
     li {
       font-size: 0.8rem;
-      color: #94a3b8; // Default warna abu-abu (belum diisi)
+      color: $text-secondary; 
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -130,7 +118,6 @@ $error-red: #ef4444;      // Merah untuk syarat yang dilanggar
         font-weight: bold;
       }
 
-      // Saat kriteria BERHASIL terpenuhi
       &.is-valid {
         color: $green-success;
         font-weight: 500;
@@ -140,7 +127,6 @@ $error-red: #ef4444;      // Merah untuk syarat yang dilanggar
         }
       }
 
-      // Saat user mulai mengetik tapi kriteria TERSEBUT salah/kurang
       &.is-invalid {
         color: $error-red;
         
