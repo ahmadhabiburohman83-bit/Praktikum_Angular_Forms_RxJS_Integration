@@ -20,9 +20,9 @@ export class AccountService {
     id: 'usr-001', 
     accountType: 'personal', 
     fullName: 'Ahmad Habiburrahman', 
-    email:    'ahmad@polinema.ac.id', 
-    phone:    '081234567890', 
-    bio:      'Mahasiswa Teknik Informatika Politeknik Negeri Malang.', 
+    email:    'ahmadhabiburohman83@gmail.com', 
+    phone:    '08990505994', 
+    bio:      'Mahasiswa Jurusan D3 Teknologi Informasi, PSDKU Polinema Lumajang.', 
   }; 
  
   getProfile(): Observable<UserProfile> { 
